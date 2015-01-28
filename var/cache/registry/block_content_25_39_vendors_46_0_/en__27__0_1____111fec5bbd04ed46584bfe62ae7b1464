@@ -1,0 +1,18 @@
+a:2:{s:4:"data";s:645:"    <div class="ty-mainbox-simple-container clearfix ty-homepage-vendors">
+                    <h2 class="ty-mainbox-simple-title">
+                
+                                    Vendors
+                                
+
+            </h2>
+                <div class="ty-mainbox-simple-body">
+    <ul>
+            <li><a href="http://bi.brystore.com/index.php?dispatch=companies.view&amp;company_id=1">Simtech</a></li>
+        </ul>
+    
+    <div class="ty-homepage-vendors__devider">
+        <a class="ty-btn ty-btn__tertiary" href="http://bi.brystore.com/index.php?dispatch=companies.catalog">All vendors</a>
+    </div>
+</div>
+    </div>
+";s:6:"expiry";i:0;}

@@ -1,0 +1,1 @@
+a:2:{s:4:"data";a:1:{s:2:"en";a:5:{s:11:"all_vendors";s:11:"All vendors";s:31:"hybrid_auth.connecting_provider";s:44:"Contacting <b>[provider]</b>. Please wait...";s:7:"loading";s:10:"Loading...";s:23:"hybrid_auth.failed_auth";s:102:"Authentication failed. The user has canceled the authentication or the provider refused the connection";s:5:"error";s:5:"Error";}}s:6:"expiry";i:0;}
