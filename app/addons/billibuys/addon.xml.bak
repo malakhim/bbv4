@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+ 
+<addon scheme='2.0'>
+	<id>billibuys</id>
+	<version>0.1</version> 
+	<name>BilliBuys</name>
+	<description>BilliBuys reverse dutch auction addon</description>
+	<priority>100500</priority>
+	<status>active</status>
+	<queries>
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_requests</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_request_archive</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_request_item</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_request_item_archive</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_bids</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_bids_archive</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_notifications</item> -->
+		<!-- <item for="install">DROP TABLE IF EXISTS ?:bb_request_categories</item>
+		<item for="install">DROP TABLE IF EXISTS ?:bb_request_category_descriptions</item> -->
+
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_ratings` (
+				`bb_rating_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`user_id` MEDIUMINT UNSIGNED NOT NULL,
+				`rating_text` VARCHAR(100) NOT NULL,
+				`rating_score` DECIMAL(1,1) NOT NULL,
+				`status` VARCHAR(1) NOT NULL,
+				`rating_type` VARCHAR(1) NOT NULL,
+				`rating_type_id` INT NOT NULL,
+				`timestamp` MEDIUMINT(11) NOT NULL,
+				`ip_address` VARCHAR(50) NOT NULL,
+				PRIMARY KEY (`bb_rating_id`)
+			)
+			COMMENT='Ratings database'
+			COLLATE='latin1_swedish_ci'
+			ENGINE=InnoDB;
+		</item>
+
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_notifications` (
+				`bb_notify_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`notify_string` VARCHAR(255),
+				`user_id` int(11) unsigned NOT NULL,
+				`ip_address` int(11) unsigned NOT NULL,
+				`timestamp` int(11) unsigned NOT NULL,
+				PRIMARY KEY (`bb_notify_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_requests` (
+				`bb_request_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`user_id` int(11) unsigned NOT NULL,
+				`request_item_id` int(11) unsigned,
+				`ip_address` int(11) unsigned NOT NULL,
+				`timestamp` int(11) unsigned NOT NULL,
+				`expiry_date` int(11) unsigned NOT NULL,
+				`allow_over_max_price` tinyint(1) ZEROFILL unsigned NOT NULL,
+				`item_added_to_cart` tinyint(1) ZEROFILL unsigned NOT NULL,
+				`request_category_id` int(11) unsigned,
+				PRIMARY KEY (`bb_request_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_request_archive` (
+				`bb_request_archive_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`bb_request_id` int(11),
+				`user_id` int(11) unsigned NOT NULL,
+				`request_id` int(11),
+				`ip_address` int(11) unsigned NOT NULL,
+				`timestamp` int(11) unsigned NOT NULL,
+				`expiry_date` int(11) unsigned NOT NULL,
+				`allow_over_max_price` tinyint(1) ZEROFILL unsigned NOT NULL,
+				`request_category_id` int(11) unsigned,
+				PRIMARY KEY (`bb_request_archive_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_request_categories` (
+				`bb_request_category_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`parent_category_id` int(11) unsigned ZEROFILL,
+				`id_path` varchar(255),
+				`position` smallint(5) unsigned ZEROFILL,
+				`status` char(1) DEFAULT "A",
+				PRIMARY KEY (`bb_request_category_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_request_category_descriptions` (
+				`bb_request_category_id` int(11) unsigned ZEROFILL NOT NULL,
+				`lang_code` VARCHAR(2) NOT NULL DEFAULT 'EN',
+				`category_name` VARCHAR(50),
+				`description` VARCHAR(500),
+				PRIMARY KEY (`bb_request_category_id`,`lang_code`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_request_item` (
+				`bb_request_item_id` int(11) NOT NULL AUTO_INCREMENT,
+				`title` VARCHAR(50),
+				`description` VARCHAR(500),
+				`max_price` DECIMAL(10,2),
+				`over_max_price` tinyint(1) ZEROFILL unsigned NOT NULL,
+				PRIMARY KEY (`bb_request_item_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_request_item_archive` (
+				`bb_request_item_archive_id` int(11) NOT NULL AUTO_INCREMENT,
+				`bb_request_item_id` int(11),
+				`title` VARCHAR(50),
+				`description` VARCHAR(500),
+				`max_price` DECIMAL(10,2),
+				`over_max_price` tinyint(2) ZEROFILL unsigned NOT NULL,
+				PRIMARY KEY (`bb_request_item_archive_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_bids` (
+				`bb_bid_id` int(11) NOT NULL AUTO_INCREMENT,
+				`request_id` int(11),
+				`product_id` int(11),
+				`price` DECIMAL(10,2),
+				`quantity` INT(11),
+				`user_id` INT(11),
+				`active` TINYINT(1) NOT NULL DEFAULT '1',
+				PRIMARY KEY (`bb_bid_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+		<item for="install">
+			CREATE TABLE IF NOT EXISTS `?:bb_bids_archive` (
+				`bb_bid_archive_id` int(11) NOT NULL AUTO_INCREMENT,
+				`bb_bid_id` int(11),
+				`request_id` int(11),
+				`product_id` int(11),
+				`price` DECIMAL(10,2),
+				`quantity` INT(11),
+				`user_id` INT(11),
+				`active` TINYINT(1) NOT NULL DEFAULT '1',
+				PRIMARY KEY (`bb_bid_archive_id`)
+			) Engine=MyISAM DEFAULT CHARSET UTF8;
+		</item>
+
+		<!-- <item for="install">
+			INSERT INTO `?:settings_objects` (`name`, `section_id`, `section_tab_id`, `type`, `value`) VALUES ('log_type_bb_request', 12, 0, 'N', '#M#create=Y&delete=Y&update=Y');
+			SET @object_id = LAST_INSERT_ID();
+			INSERT INTO `?:settings_variants` (`object_id`, `name`) VALUES (@object_id,'create');
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (LAST_INSERT_ID(),`V`,`EN`,`Create`);
+			INSERT INTO `?:settings_variants` (`object_id`, `name`) VALUES (@object_id,'delete');
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (LAST_INSERT_ID(),`V`,`EN`,`Delete`);
+			INSERT INTO `?:settings_variants` (`object_id`, `name`) VALUES (@object_id,'update');
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (LAST_INSERT_ID(),`V`,`EN`,`Update`);
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (@object_code,`O`,`EN`,`Billibuys Request`);
+		</item>
+
+		<item for="install">
+			INSERT INTO `?:settings_objects` (`name`, `section_id`, `section_tab_id`, `type`, `value`) VALUES ('log_type_bb_bid', 12, 0, 'N', '#M#create=Y&delete=Y&update=Y');
+			SET @object_id = LAST_INSERT_ID();
+			INSERT INTO `?:settings_variants` (`object_id`, `name`) VALUES (@object_id,'create');
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (LAST_INSERT_ID(),`V`,`EN`,`Create`);
+			INSERT INTO `?:settings_variants` (`object_id`, `name`) VALUES (@object_id,'delete');
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (LAST_INSERT_ID(),`V`,`EN`,`Delete`);
+			INSERT INTO `?:settings_variants` (`object_id`, `name`) VALUES (@object_id,'update');
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (LAST_INSERT_ID(),`V`,`EN`,`Update`);
+			INSERT INTO `?:settings_descriptions` (`object_id`,`object_type`,`lang_code`,`value`) VALUES (@object_code,`O`,`EN`,`Billibuys Bid`)
+		</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_requests</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_request_archive</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_notify_id</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_request_item</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_request_item_archive</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_bids</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_bids_archive</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_bids_archive</item> -->
+		<!-- <item for="uninstall">DELETE FROM ?:images WHERE image_id IN (SELECT detailed_id FROM ?:images_links WEHRE object_type LIKE "request")</item> -->
+		<!-- <item for="uninstall">DELETE FROM ?:images_links WHERE object_type LIKE "request"</item> -->
+		<!-- <item for="uninstall">DROP TABLE IF EXISTS ?:bb_request_categories</item>
+		<item for="uninstall">DROP TABLE IF EXISTS ?:bb_request_category_descriptions</item> -->
+	</queries>
+
+	<language_variables>
+		<!-- Back end view variables -->
+		<item lang="EN" id="create_notification">Would you like to be notified when someone places a request for an item?</item>
+		<item lang="EN" id="item">Item</item>
+		<item lang="EN" id="posted">Posted</item>
+		<item lang="EN" id="current_bid">Current Offer</item>
+		<item lang="EN" id="place_bid">Place Offer</item>
+		<item lang="EN" id="create_product_package">Create new Product/Package</item>
+		<item lang="EN" id="bb_manage_billibuys_categories">Manage Billibuys Categories</item>
+
+		<!-- Menu items -->
+		<item lang="EN" id="my_activity">My Activity</item>
+		<item lang="EN" id="buy">Buy</item>
+		<item lang="EN" id="sell">Sell</item>
+		<item lang="EN" id="bidsoffers">Bids/Offers</item>
+		<item lang="EN" id="support">Support</item>
+		<item lang="EN" id="bb_browse">Browse</item>
+
+		<!-- Back end package view variables -->
+		<item lang="EN" id="add_package">Add Package</item>
+
+		<!-- Notify variables -->
+		<item lang="EN" id="bb_item">Item</item>
+
+		<!-- Front end view variables -->
+		<item lang="EN" id="bb_item_enter_through_bids">This item can only be purchased through bids</item>
+		<item lang="EN" id="bb_enter_item">Please enter the item you want here</item>
+		<item lang="EN" id="bb_ms_since_submitted">Microseconds since submitted</item>
+		<item lang="EN" id="bb_current_bid">Current bid</item>
+		<item lang="EN" id="bb_not_logged_in">Please log in to view your bids</item>
+		<item lang="EN" id="bb_no_bids">No bids yet</item>
+		<item lang="EN" id="two_weeks_plus">2+ weeks</item>
+		<item lang="EN" id="bb_text_place_request_question">Would you like to place a request?</item>
+		<item lang="EN" id="bb_text_log_in_to_place_request">Please log in to place a request</item>
+		<item lang="EN" id="are_you_owner">Are you the owner of this auction? Log in to purchase this item!</item>
+		<item lang="EN" id="bb_allow_over_max_price">My max price is flexible</item>
+		<item lang="EN" id="bb_looking_for_item">Looking for an item to buy?</item>
+		<item lang="EN" id="bb_let_sellers_come_to_you_with_personalised_offers">Let sellers come to you with personalised offers</item>
+		<item lang="EN" id="bb_item_description">Item Description</item>
+		<item lang="EN" id="bb_max_price">Max Price</item>
+		<item lang="EN" id="bb_need_item_by">I need this item by...</item>
+		<item lang="EN" id="bb_item_category">Item Category</item>
+
+		<item lang="EN" id="bb_looking_for_an_item">Looking for an item</item>
+		<item lang="EN" id="bb_let_sellers_come_to_you">Let the sellers come to you with personalised offers</item>
+		<item lang="EN" id="bb_looking_for_buyer">Looking to sell to someone who's looking for your item</item>
+		<item lang="EN" id="bb_select_a_category">Select a category for your item</item>
+		<item lang="EN" id="bb_i_want">I want</item>
+		<item lang="EN" id="register_as_buyer">Register as a buyer</item>
+		<item lang="EN" id="footer_copyright">BilliBuys Pty Ltd. All Rights Reserved.</item>
+		<item lang="LM" id="footer_copyright">Lorem ipsum dolor sit amet, consectetue</item>
+		<item lang="EN" id="bb_select_expiry_date">Expiry Date</item>
+		<item lang="EN" id="auction_finished">Auction has finished</item>
+		<item lang="EN" id="click_here_to_return_to_main_page">Click here to return to main page</item>
+		<item lang="EN" id="no_max_price">No max price</item>
+		<item lang="EN" id="successful_logout">You have been successfully logged out.</item>
+		<item lang="EN" id="no_current_requests_found">There are no current requests</item>
+		<item lang="EN" id="lowest_offer">Best Offer</item>
+		<item lang="EN" id="bid">Bid</item>
+
+		<!-- Home page variables -->
+		<item lang="EN" id="about">About</item>
+		<item lang="LM" id="about">Lorem</item>
+		<item lang="EN" id="testimonials">TESTIMONIALS</item>
+		<item lang="LM" id="testimonials">Lorem ipsum.</item>
+		<item lang="EN" id="contact_us">CONTACT US</item>
+		<item lang="LM" id="contact_us">Lorem ipsu</item>
+		<item lang="EN" id="log_in">LOG IN</item>
+		<item lang="LM" id="log_in">lorem.</item>
+
+		<item lang="EN" id="jumbotron_buyer_heading">Request an item and have the Sellers come to you</item>
+		<item lang="EN" id="jumbotron_buyer_subheading">Place a request today to save time and money</item>
+		<item lang="EN" id="jumbotron_seller_heading">Find buyers who are looking <br/> for your products</item>
+		<item lang="EN" id="jumbotron_seller_subheading">Look for buyers who want exactly what you have</item>
+		<item lang="EN" id="learn_more">Learn more</item>
+		<item lang="EN" id="how_does_billibuys_work_for">How does Billibuys.com work for</item>
+		<item lang="EN" id="buyers">Buyers</item>
+		<item lang="EN" id="sellers">Sellers</item>
+		<item lang="EN" id="for_the_buyers">For Buyers</item>
+		<item lang="EN" id="for_the_sellers">For Sellers</item>
+		<item lang="EN" id="find_out_how">Find out how</item>
+		<item lang="EN" id="find_out_more">Find out more</item>
+		<item lang="EN" id="try_for_free">Try it out for free!</item>
+		<item lang="EN" id="register_now_for_free">Register now for free</item>
+		
+		<!-- Steps -->
+		<item lang="EN" id="request_a_product">Request a product</item>
+		<item lang="EN" id="get_bids">Get bids from sellers</item>
+		<item lang="EN" id="purchase_items">Purchase items from bids</item>
+		<item lang="EN" id="step_1_buyer">Think of a product you want and indicate how much you want to buy it for.</item>
+		<item lang="EN" id="step_2_buyer">Sellers will bid with their products and you can choose which ones you want to buy.</item>
+		<item lang="EN" id="step_3_buyer">Pay for your purchase and the seller will ship directly to you.</item>
+
+		<item lang="EN" id="step_1_seller">Register your product with us. All products are accepted, from small to large</item>
+		<item lang="EN" id="step_2_seller">Browse list of buyers' requests. These will be automatically matched to your products</item>
+		<item lang="EN" id="step_3_seller">Place a bid on a request and wait for buyer to choose your item.</item>
+		<item lang="EN" id="step_4_seller">Check buyer's payment and ship item to buyer</item>
+
+		<!-- About section -->
+		<item lang="EN" id="about_line_1">We love both buyers and sellers.</item>		
+		<item lang="EN" id="about_line_2">We want sellers to have real-time buyer information.</item>		
+		<item lang="EN" id="about_line_3">We want buyers to have access to relevant sellers.</item>		
+		<item lang="EN" id="about_line_4">We think eCommerce needs a change.</item>
+		<item lang="EN" id="about_line_5">A new way to shop.</item>
+		<item lang="EN" id="were_here_to_introduce_text">We're here to introduce a new way to shop.</item>
+
+		<!-- Back end view variables -->
+		<item lang="EN" id="bb_billibuys_menu_description">View Billibuys Auctions</item>
+		<item lang="EN" id="bb_manage_billibuys_categories_menu_description">Manage Billibuys Categories</item>	
+		<item lang="EN" id="btn_place_bid_txt">Place bid with selected item</item>
+		<item lang="EN" id="place_bid_instr">Please select a product to bid on this request with, or add a new product using the button on the right.</item>
+		<item lang="EN" id="zero_quantity">You don't have any quantity remaining! Click here to add more.</item>
+		<item lang="EN" id="update_bids_auto_update_option_text">Automatically enable and adjust all disabled offers for <strong>[product]</strong> to [quantity] items each at [currency][price]</item>
+		<item lang="EN" id="update_bids_manual_update_option_text">Manually re-enable and adjust disabled offers</item>
+		<item lang="EN" id="update_bids_no_update_option_text">Leave all disabled offers as disabled (You can enable and adjust these later in your "Offers" page)</item>
+		<item lang="EN" id="update_bids">Update Offers</item>
+		<item lang="EN" id="updated_successful_msg">Bids have been updated successfully</item>
+
+		<!-- General -->
+		<item lang="EN" id="bb_billibuys">Billibuys</item>	
+		<item lang="EN"	id="bb_packages">Packages</item>
+		<item lang="EN" id="bb_place_request">Place Request</item>
+		<item lang="EN" id="place_request">Place Request</item>
+		<item lang="EN" id="requests">Requests</item>
+		<item lang="EN" id="terms_and_conditions">Terms and Conditions</item>
+		<item lang="EN" id="disclaimer">Disclaimer</item>
+	  
+	  <!-- BB Request Page -->
+	  <!-- Field names -->
+	  <item lang="EN" id="bb_request_title">Item Name</item>
+	  
+	  <!-- Field descriptions -->
+	  <item lang="EN" id="title_description">e.g. Sony Bravia Television</item>
+	  <item lang="EN" id="desc_description">e.g. 55 Inch LED TV. (The more descriptive you are, the better the offers become)</item>
+	  <item lang="EN" id="max_price_description">e.g. 15.95</item>
+
+		<!-- Error messages -->
+		<item lang="EN" id="error_occurred">An error has occurred. Please try refreshing the page, or contact customer support.</item>
+		<item lang="EN" id="bid_is_over_request_max">Your bid is over the customer's limit. Please keep your total bid under </item>
+		<item lang="EN" id="bid_already_accepted_for_this_auction">You have already accepted a bid from this auction. Go to your cart and remove it if you wish to change this.</item>
+		<item lang="EN" id="bb_name_too_long">Name is too long. Please keep it under 50 characters</item>
+		<item lang="EN" id="bb_description_too_long">Description is too long. Please keep it under 50 characters</item>
+		<item lang="EN" id="reassign_requests_from_this_category_to_delete">Reassign requests from this category to delete it!</item>
+		<item lang="EN" id="your_bid_amount">Your bid amount is: </item>
+		<item lang="EN" id="bid_name_matching_error">Your item does not match what the buyer requested. Please choose another item.</item>
+		<item lang="EN" id="bid_price_cannot_be_zero">You cannot give away items for free in bids. Please put a non-negative price on your bid.</item>
+		<item lang="EN" id="qty_cannot_be_zero">You have zero/invalid stock on the product selected. Try adding some stock to the product first by editing the product.</item>
+		<item lang="EN" id="no_request_item_selected">Please choose an item to bid with.</item>
+		<item lang="EN" id="cannot_bid_own_auction">You cannot bid on your own auction. How did you even get here?</item>
+		<item lang="EN" id="no_disabled_bids">You have no disabled offers. Click [here] to view your offers</item>
+		<item lang="EN" id="here">here</item>
+		<item lang="EN" id="bb_no_results_match_search">No results match the search terms</item>
+		<item lang="EN" id="bb_error_validator_price_format">Price must be in decimal format, without any currency signs.</item>
+		<item lang="EN" id="bb_error_invalid_input_params">Invalid input parameters</item>
+
+		<!-- Frontend billibuys.view variables-->
+		<item lang="EN" id="view_requests">Current Requests</item>
+		<item lang="EN" id="item_and_description">Item and Description</item>
+		<item lang="EN" id="time_remaining">Time remaining</item>
+		<item lang="EN" id="sort_by_max_price_asc">Sort by Maximum Price: Low to High</item>
+		<item lang="EN" id="sort_by_max_price_desc">Sort by Maximum Price: High to Low</item>
+		<item lang="EN" id="sort_by_title_asc">Sort by Alphabetical: A to Z</item>
+		<item lang="EN" id="sort_by_title_desc">Sort by Alphabetical: Z to A</item>
+
+		<!-- Frontend ratings variables-->
+		<item lang="EN" id="add_rating">Add rating</item>		
+		<item lang="EN" id="add_comment">Add comment</item>	
+		<item lang="EN"	 id="ratings">Ratings</item>
+
+		<!-- Mail variables -->
+		<item lang="EN" id="text_offer_made_on_following_auction">Someone has made the following offer on your request for </item>
+		<item lang="EN" id="text_click_to_view_request">Click here to view the request</item>
+		<item lang="EN" id="regards">Regards</item>
+		<item lang="EN" id="zero_amount">You have run out of stock on an item</item>
+		<item lang="EN" id="sold_out_line">Congratulations! You have recently sold out of</item>
+		<item lang="EN" id="disabled_bids">So you don’t get orders you can’t fulfil, we have disabled all bids using this product for you</item>
+		<item lang="EN" id="reenable_bids">If you wish to re-enable these bids, you can add more stock to your product <a href="[url]">here</a></item>.
+		<item lang="EN" id="have_a_great_day">Have a great day!</item>
+
+		<!-- Frontend billibuys.request variables-->
+		<item lang="EN" id="view_request">View Request</item>
+	</language_variables>
+
+	<functions>
+		<item for="install">fn_install_log_objects</item>
+		<item for="uninstall">fn_uninstall_log_objects</item>
+	</functions>
+</addon>

@@ -1,0 +1,3 @@
+<products>
+	<item title="bb_manage_billibuys_categories" dispatch="billibuys.categories_manage" position="20"/>
+</products>
