@@ -102,7 +102,7 @@
 		{/strip}
 		</td>
 		<td width="15%" class="nowrap right">
-			<a href="{"products.manage?cid=`$category.bb_request_category_id`"|fn_url}" class="num-items">{if "COMPANY_ID"|defined}{__('manage_products')}{else}<span>&nbsp;{$category.product_count}&nbsp;</span>{/if}</a>&nbsp;
+			<a href="{"products.manage?cid=`$category.bb_request_category_id`"|fn_url}" class="num-items">{if $runtime.company_id}{__('manage_products')}{else}<span>&nbsp;{$category.product_count}&nbsp;</span>{/if}</a>&nbsp;
 			{*include file="buttons/button.tpl" but_text=__('add') but_href="products.add?category_id=`$category.bb_request_category_id`" but_role="add"*}
 		</td>
 		<td width="10%">

@@ -1,7 +1,7 @@
 {if !$cart.products.$key.extra.parent}
 <tr>
 	<td valign="top" class="product-image-cell">
-	{if $mode == "cart" || $show_images}
+	{if $runtime.mode == "cart" || $show_images}
 	<div class="product-image cm-reload-{$obj_id}" id="product_image_update_{$obj_id}">
 		{hook name="checkout:product_icon"}
 		<a href="{"products.view?product_id=`$product.product_id`"|fn_url}">
@@ -10,7 +10,7 @@
 	<!--product_image_update_{$obj_id}--></div>
 	</td>
 	<td width="50%" valign="top" class="product-description">
-	{$product.product|unescape}{if !$product.exclude_from_calculate}<a class="{$ajax_class} icon-delete-big" href="{"checkout.delete?cart_id=`$key`&amp;redirect_mode=`$mode`"|fn_url}" rev="cart_items,checkout_totals,cart_status*,checkout_steps,checkout_cart" title="{__('remove')}"></a>{/if}	
+	{$product.product|unescape}{if !$product.exclude_from_calculate}<a class="{$ajax_class} icon-delete-big" href="{"checkout.delete?cart_id=`$key`&amp;redirect_mode=`$runtime.mode`"|fn_url}" rev="cart_items,checkout_totals,cart_status*,checkout_steps,checkout_cart" title="{__('remove')}"></a>{/if}	
 		<p class="sku{if !$product.product_code} hidden{/if}" id="sku_{$key}">
 			{__('sku')}: <span class="cm-reload-{$obj_id}" id="product_code_update_{$obj_id}">{$product.product_code}<!--product_code_update_{$obj_id}--></span>
 		</p>
