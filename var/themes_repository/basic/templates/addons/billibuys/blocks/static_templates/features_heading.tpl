@@ -1,0 +1,1 @@
+<div id="fpanel-header">{__('fpanel-header-text')}</div>

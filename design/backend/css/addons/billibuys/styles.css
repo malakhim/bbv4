@@ -1,0 +1,375 @@
+/*Top nav stuff*/
+
+.header-solid{
+	background: #1e90bd; /* Old browsers */
+	/*background: -moz-linear-gradient(left,  #1e90bd 0%, #3fb2d1 100%); /* FF3.6+ */*/
+	/*background: -webkit-gradient(linear, left top, right top, color-stop(0%,#1e90bd), color-stop(100%,#3fb2d1)); /* Chrome,Safari4+ */*/
+	/*background: -webkit-linear-gradient(left,  #1e90bd 0%,#3fb2d1 100%); /* Chrome10+,Safari5.1+ */*/
+	/*background: -o-linear-gradient(left,  #1e90bd 0%,#3fb2d1 100%); /* Opera 11.10+ */*/
+	/*background: -ms-linear-gradient(left,  #1e90bd 0%,#3fb2d1 100%); /* IE10+ */*/
+	/*background: linear-gradient(to right,  #1e90bd 0%,#3fb2d1 100%); /* W3C */*/
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e90bd', endColorstr='#3fb2d1',GradientType=1 ); /* IE6-9 */*/
+}
+
+.top_menu_item{
+	color: white;
+}
+
+.top_menu_item:hover{
+	color: #175A6C;
+}
+
+.top-nav-submenu{
+	position: absolute;
+	visibility: hidden;
+	margin-top: 37px;
+	/* padding: 0; */
+	padding-left: 15px;
+	line-height: 25px;
+	/*padding-bottom: 6px;*/
+	padding-top: 6px;
+	margin-left: -20px;
+}
+
+.submenu-wrapper{
+	position: absolute;
+	visibility: hidden;
+	margin-top: 25px;
+	padding-left: 20px;
+	padding-right: 20px;
+	line-height: 25px;
+	padding-top: 3px;
+	margin-left: -20px;
+}
+
+.top-nav-submenu li{
+	float: none;
+	height: 31px;
+	padding-top: 7px;
+	margin-top: -4px;
+	margin-left: -15px;
+	padding-left: 20px;
+	padding-right: 15px;
+}
+
+.top-nav-submenu li:hover{
+	background-color: #3A9EB8;
+	color: #175A6C;
+}
+
+.top-nav-submenu li a{
+	width: auto;
+}
+
+.submenu_item{
+	color: white;
+}
+
+.top_menu_item .fa{
+	font-size: 0.8em;
+	font-weight: bolder;
+}
+
+.top-nav-submenu li a:hover{
+	background-color: rgba(63,178,209,0.7);
+}
+
+
+.top-my-account .cm-popup-title:hover a{
+	color:#777;
+}
+
+.top-my-account .cm-popup-title a{
+	color:white;
+}
+
+#second-top-nav{
+	width: 100%;
+	min-height: 40px;
+	margin-top:5px;
+	position: absolute;
+}
+
+#second-top-nav-elements{
+	margin-top: -4px;
+	margin-left: 20px;
+}
+
+.top_menu_item:hover{
+	color: #175A6C;
+}
+
+#second-top-nav-elements a:hover{
+	text-decoration: none;
+}
+
+.top_menu_item{
+	font-family: "Roboto";
+	font-size: 1.4em;
+	padding-right: 15px;
+	color: white;
+	cursor: pointer;
+	padding-left: 15px;
+	padding-top: 5px;
+	list-style: none;
+	float: left;
+	padding-bottom: 25px;
+}
+
+li.top_menu_item{
+	margin-top: -4px;
+}
+
+.top-logo .logo-container{
+	margin-top: -20px;
+	min-height: 70px;
+}
+
+.header-transparent{
+	background-color: rgba(0, 104, 133, 0.38);
+	background-image: none;
+}
+
+.header{
+	height: 67px;
+}
+
+.top-nav-triangle{
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 8px 14px 8px;
+	border-color: transparent transparent #1e90bd transparent;
+	-webkit-transform:rotate(360deg);
+	margin-top: -20px;
+	margin-bottom: 5px;
+}
+
+
+.submenu-item-container:hover{
+	background-color: green;
+	color: #175A6C;
+}
+
+#index .top-nav-triangle{
+	border-color: transparent transparent rgba(0,104,133,0.38) transparent;
+}
+
+.logo-container{
+	min-height: 53px;
+}
+
+.logo-container .logo{
+	margin-top: -10px;
+}
+
+#search-submit{
+	color: white;
+	cursor: pointer;
+	font-size: 1.9em;
+	padding: 7px;
+	margin-left: -7px;
+}
+
+#search-submit:hover{
+	color:#175A6C;
+}
+
+#top-search-form .input-search#input-search{
+	background-color: rgba(0, 104, 133, 0.38);
+	border: 1px solid #e0e0e0;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	height: 37px;
+	color: white;
+	font-size: 1.1em;
+	border-radius: 30px;
+	background-image: none;
+	padding-left: 10px!important;
+	width: 20%;
+	margin-left: 21px;
+	display: inline;
+	margin-top: -14px;
+}
+
+#top-search-form{
+	display:inline;
+}
+
+.top-links-right{
+	font-size: 1em;
+}
+
+.top-links-right a{
+	color: white;
+}
+
+.top-links-right a:hover{
+	text-decoration: none;
+}
+
+.top-links-right span.flat-btn{
+	cursor: pointer;
+}
+
+.top-links-right span.flat-btn:hover{
+	background-color: #1B7B9E;
+}
+
+.top-my-account{
+	margin-top:3px;
+}
+
+.top-nav-login{
+	margin-top: -3px;
+}
+
+.top-nav-login .top_menu_item{
+	padding-left: 25px;
+	padding-right: 10px;	
+}
+
+body{
+	background: none;
+}
+
+.top-nav-login .buttons-container{
+	padding: 0;
+	margin: 0;
+}
+
+html body * span.clear, html body * div.clear, html body * li.clear, html body * dd.clear{
+	visibility: visible;
+	width: inherit;
+	height: inherit;
+	font-size: 100%;
+	float:inherit;
+	overflow: inherit;
+}
+
+div#main_column{
+	margin: 0;
+	border: none;
+	background: none;
+	box-shadow: none;
+}
+
+.bb-bid-item .bb-list-title{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-transform: none;
+	margin-bottom: 20px;
+}
+
+.bb-list-title{
+	margin-top: -108px;
+	font-size: 2em;
+	font-family: "Roboto";
+	text-transform: uppercase;
+	width: 700px;
+}
+
+.bb-list-title a:hover {
+	text-decoration: none;
+	color: rgb(244,167,74);
+}
+
+.bb-list-txt{
+	margin-left: 140px;
+}
+
+.bb-list-qty{
+	margin-top: 20px;
+	padding-bottom: 40px;
+}
+
+a.list-btn{
+	padding: 10px 20px 10px 20px;
+	border-radius: 10px;
+	color: white;
+	margin-top: 30px;
+}
+
+.list-btn:hover{
+	text-decoration: none;
+	color: white;
+}
+
+.delete-btn{
+	background-color: rgb(255,0,0);	
+}
+
+.delete-btn:hover{
+	background-color: rgb(255,90,90);
+}
+
+.delete-btn:active{
+	background-color: rgb(190,0,0);	
+}
+
+.edit-btn{
+	background-color: rgb(75,172,198);	
+}
+
+.edit-btn:hover{
+	background-color: rgb(104, 193, 216);	
+}
+
+.edit-btn:active{
+	background-color: rgb(47, 114, 132);
+}
+
+.bb-bid-item{
+	margin-top: 50px;
+}
+
+.bb-list-txt hr{
+	border-bottom: 1px solid black;
+	margin-bottom: 10px;
+}
+
+/* Product update page */
+
+.product-manage .form-field label{
+	margin-left: 0;
+}
+
+#box_attach_images_product_main_0{
+	margin-left: 10%;
+}
+
+.mainbox-breadcrumbs{
+	max-width: 100%;
+}
+
+.mainbox-title-container .next-prev a{
+	display: none;
+}
+
+/*Footer*/
+.footer{
+	background-color: #f36e21;
+	font-family: "Roboto";
+	font-size: 10pt;
+	min-height: 0px;
+}
+
+.billibuys_footer {
+	margin-top: 11px;
+	color: white;
+	font-size: 8pt;
+}
+
+#billibuys_footer_logo {
+	float: left;
+	margin-top: -20px;
+}
+
+.footer a:link, .footer a:visited {
+	color: white;
+}
+
+/* Product update/add page */
+#product_full_descr, #product_short_descr{
+	width: 75%;
+}
