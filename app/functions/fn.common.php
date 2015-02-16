@@ -612,7 +612,7 @@ function fn_restore_post_data($key)
  *
  * @return string Language variable value; in case the value is absent, language variable name with "_" prefix is returned
  */
-function fn_get_lang_var($var_name, $lang_code = CART_LANGUAGE)
+function __($var_name, $lang_code = CART_LANGUAGE)
 {
     return LanguageValues::getLangVar($var_name, $lang_code);
 }
@@ -627,7 +627,7 @@ function fn_get_lang_var($var_name, $lang_code = CART_LANGUAGE)
  *
  * @return Array of language variables
  */
-function fn_get_lang_vars_by_prefix($prefix, $lang_code = CART_LANGUAGE)
+function __s_by_prefix($prefix, $lang_code = CART_LANGUAGE)
 {
     return LanguageValues::getLangVarsByPrefix($prefix, $lang_code);
 }
@@ -4786,7 +4786,7 @@ function fn_get_phpinfo($type = -1)
  */
 function __($var, $params = array(), $lang_code = CART_LANGUAGE)
 {
-    $var = fn_get_lang_var($var, $lang_code);
+    $var = __($var, $lang_code);
 
     if (!empty($params) && is_array($params)) {
 

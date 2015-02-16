@@ -9,7 +9,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 
 	if($mode == 'view'){
 		// if(!isset($_REQUEST['category_id']))
-		fn_add_breadcrumb(fn_get_lang_var('bb_browse'));
+		fn_add_breadcrumb(__('bb_browse'));
 		// Stub for viewing own auctions
 		$search_params = Array(
 			'user'         => $auth['user_id'],
@@ -87,7 +87,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 			}
 		}else{
 			if($requests['message'])
-				$view->assign("error_msg",fn_get_lang_var($requests['message']));
+				$view->assign("error_msg",__($requests['message']));
 			else{
 				print_r('An error has occurred, please try again');
 			}
@@ -121,7 +121,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 		//FIXME: Need a way to stop this appearing if succcess=1 appears unnecessarily in URL, incomplete solution in code
 		if($_REQUEST['success'] && !$_SESSION['displayed']){
 			if(!fn_notification_exists('E',array('displayed'=>1)))
-				fn_set_notification('N', fn_get_lang_var('notice'), fn_get_lang_var('bid_successfully_placed'));
+				fn_set_notification('N', __('notice'), __('bid_successfully_placed'));
 			// $_SESSION['displayed'] = 1; Need a way to clear this if user bids again
 		}
 		$params = Array(
@@ -154,7 +154,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 			return array(CONTROLLER_STATUS_NO_PAGE);
 		}
 
-		fn_add_breadcrumb(fn_get_lang_var('view_request'),false);
+		fn_add_breadcrumb(__('view_request'),false);
 
 		// Param user_id needs to be set because apparently mysql doesn't know buggerall about how to handle multiple user_id fields
 		$params = Array('request_id' => $params['request_id'],'fields'=> Array('*','?:bb_bids.user_id'));
@@ -206,7 +206,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 			$categories = fn_bb_get_categories();
 			$view->assign('categories',$categories);
 			$view->assign('max_price_variation',MAX_PRICE_VARIATION * 100);
-			fn_add_breadcrumb(fn_get_lang_var('bb_place_request'), "billibuys.place_request");
+			fn_add_breadcrumb(__('bb_place_request'), "billibuys.place_request");
 		}
 	}elseif($mode == 'sso'){
 		if(isset($_REQUEST['redirect'])){

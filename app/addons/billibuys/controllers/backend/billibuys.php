@@ -107,7 +107,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 
 		if ($mode == 'p_subscr') {
 			$params['get_subscribers'] = true;
-			fn_add_breadcrumb(fn_get_lang_var('products'), "products.manage");
+			fn_add_breadcrumb(__('products'), "products.manage");
 		}
 
 		list($products, $search, $product_count) = fn_get_products($params, Registry::get('settings.Appearance.admin_products_per_page'), DESCR_SL);
@@ -121,186 +121,186 @@ if ( !defined('AREA') ) { die('Access denied'); }
 		$selected_fields = array(
 			array(
 				'name' => '[data][popularity]',
-				'text' => fn_get_lang_var('popularity')
+				'text' => __('popularity')
 			),
 			array(
 				'name' => '[data][status]',
-				'text' => fn_get_lang_var('status'),
+				'text' => __('status'),
 				'disabled' => 'Y'
 			),
 			array(
 				'name' => '[data][product]',
-				'text' => fn_get_lang_var('product_name'),
+				'text' => __('product_name'),
 				'disabled' => 'Y'
 			),
 			array(
 				'name' => '[data][price]',
-				'text' => fn_get_lang_var('price')
+				'text' => __('price')
 			),
 			array(
 				'name' => '[data][list_price]',
-				'text' => fn_get_lang_var('list_price')
+				'text' => __('list_price')
 			),
 			array(
 				'name' => '[data][short_description]',
-				'text' => fn_get_lang_var('short_description')
+				'text' => __('short_description')
 			),
 			array(
 				'name' => '[categories]',
-				'text' => fn_get_lang_var('categories')
+				'text' => __('categories')
 			),
 			array(
 				'name' => '[data][full_description]',
-				'text' => fn_get_lang_var('full_description')
+				'text' => __('full_description')
 			),
 			array(
 				'name' => '[data][search_words]',
-				'text' => fn_get_lang_var('search_words')
+				'text' => __('search_words')
 			),
 			array(
 				'name' => '[data][meta_keywords]',
-				'text' => fn_get_lang_var('meta_keywords')
+				'text' => __('meta_keywords')
 			),
 			array(
 				'name' => '[data][meta_description]',
-				'text' => fn_get_lang_var('meta_description')
+				'text' => __('meta_description')
 			),
 			
 			array(
 				'name' => '[data][usergroup_ids]',
-				'text' => fn_get_lang_var('usergroups')
+				'text' => __('usergroups')
 			),
 			
 			array(
 				'name' => '[main_pair]',
-				'text' => fn_get_lang_var('image_pair')
+				'text' => __('image_pair')
 			),
 			array(
 				'name' => '[data][min_qty]',
-				'text' => fn_get_lang_var('min_order_qty')
+				'text' => __('min_order_qty')
 			),
 			array(
 				'name' => '[data][max_qty]',
-				'text' => fn_get_lang_var('max_order_qty')
+				'text' => __('max_order_qty')
 			),
 			array(
 				'name' => '[data][qty_step]',
-				'text' => fn_get_lang_var('quantity_step')
+				'text' => __('quantity_step')
 			),
 			array(
 				'name' => '[data][list_qty_count]',
-				'text' => fn_get_lang_var('list_quantity_count')
+				'text' => __('list_quantity_count')
 			),
 			array(
 				'name' => '[data][product_code]',
-				'text' => fn_get_lang_var('product_code')
+				'text' => __('product_code')
 			),
 			array(
 				'name' => '[data][weight]',
-				'text' => fn_get_lang_var('weight')
+				'text' => __('weight')
 			),
 			array(
 				'name' => '[data][shipping_freight]',
-				'text' => fn_get_lang_var('shipping_freight')
+				'text' => __('shipping_freight')
 			),
 			array(
 				'name' => '[data][is_edp]',
-				'text' => fn_get_lang_var('downloadable')
+				'text' => __('downloadable')
 			),
 			array(
 				'name' => '[data][edp_shipping]',
-				'text' => fn_get_lang_var('edp_enable_shipping')
+				'text' => __('edp_enable_shipping')
 			),
 			array(
 				'name' => '[data][free_shipping]',
-				'text' => fn_get_lang_var('free_shipping')
+				'text' => __('free_shipping')
 			),
 			array(
 				'name' => '[data][feature_comparison]',
-				'text' => fn_get_lang_var('feature_comparison')
+				'text' => __('feature_comparison')
 			),
 			array(
 				'name' => '[data][zero_price_action]',
-				'text' => fn_get_lang_var('zero_price_action')
+				'text' => __('zero_price_action')
 			),
 			array(
 				'name' => '[data][taxes]',
-				'text' => fn_get_lang_var('taxes')
+				'text' => __('taxes')
 			),
 			array(
 				'name' => '[data][features]',
-				'text' => fn_get_lang_var('features')
+				'text' => __('features')
 			),
 			array(
 				'name' => '[data][page_title]',
-				'text' => fn_get_lang_var('page_title')
+				'text' => __('page_title')
 			),
 			array(
 				'name' => '[data][timestamp]',
-				'text' => fn_get_lang_var('creation_date')
+				'text' => __('creation_date')
 			),
 			array(
 				'name' => '[data][amount]',
-				'text' => fn_get_lang_var('quantity')
+				'text' => __('quantity')
 			),
 			array(
 				'name' => '[data][avail_since]',
-				'text' => fn_get_lang_var('available_since')
+				'text' => __('available_since')
 			),
 			array(
 				'name' => '[data][out_of_stock_actions]',
-				'text' => fn_get_lang_var('out_of_stock_actions')
+				'text' => __('out_of_stock_actions')
 			),
 			
 			array(
 				'name' => '[data][localization]',
-				'text' => fn_get_lang_var('localization')
+				'text' => __('localization')
 			),
 			
 			array(
 				'name' => '[data][details_layout]',
-				'text' => fn_get_lang_var('product_details_layout')
+				'text' => __('product_details_layout')
 			),
 			array(
 				'name' => '[data][min_items_in_box]',
-				'text' => fn_get_lang_var('minimum_items_in_box')
+				'text' => __('minimum_items_in_box')
 			),
 			array(
 				'name' => '[data][max_items_in_box]',
-				'text' => fn_get_lang_var('maximum_items_in_box')
+				'text' => __('maximum_items_in_box')
 			),
 			array(
 				'name' => '[data][box_length]',
-				'text' => fn_get_lang_var('box_length')
+				'text' => __('box_length')
 			),
 			array(
 				'name' => '[data][box_width]',
-				'text' => fn_get_lang_var('box_width')
+				'text' => __('box_width')
 			),
 			array(
 				'name' => '[data][box_height]',
-				'text' => fn_get_lang_var('box_height')
+				'text' => __('box_height')
 			),
 		);
 
 		if (Registry::get('settings.General.inventory_tracking') == "Y") {
 			$selected_fields[] = array(
 				'name' => '[data][tracking]',
-				'text' => fn_get_lang_var('inventory')
+				'text' => __('inventory')
 			);
 		}
 
 		if (PRODUCT_TYPE == 'PROFESSIONAL' && Registry::get('settings.Suppliers.enable_suppliers') == 'Y') {
 			$selected_fields[] = array(
 				'name' => '[data][company_id]',
-				'text' => fn_get_lang_var('supplier')
+				'text' => __('supplier')
 			);
 		}
 
 		if (PRODUCT_TYPE == 'MULTIVENDOR') {
 			$selected_fields[] = array(
 				'name' => '[data][company_id]',
-				'text' => fn_get_lang_var('vendor')
+				'text' => __('vendor')
 			);
 		}
 
@@ -329,7 +329,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 		$view->assign('request_id',$params['request_id']);
 
 		$view->assign('product_count', $product_count);
-		fn_paginate((isset($_REQUEST['page']) ? $_REQUEST['page'] : 1), $product_count, Registry::get('settings.Appearance.admin_products_per_page'));
+		db_paginate((isset($_REQUEST['page']) ? $_REQUEST['page'] : 1), Registry::get('settings.Appearance.admin_products_per_page'), $product_count);
 		if (!empty($_SESSION['saved_post_data']) && !empty($_SESSION['saved_post_data']['products_data'])) {
 			$saved_selected_product_id = reset($_SESSION['saved_post_data']['product_ids']);
 			$view->assign('saved_selected_product',$_SESSION['saved_post_data']['products_data'][$saved_selected_product_id]);
@@ -374,7 +374,7 @@ if ( !defined('AREA') ) { die('Access denied'); }
 		// 	// }
 		// }
 		// 
-		fn_add_breadcrumb(fn_get_lang_var('bb_manage_billibuys_categories'),"billibuys.categories_manage");
+		fn_add_breadcrumb(__('bb_manage_billibuys_categories'),"billibuys.categories_manage");
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			fn_bb_add_category($_REQUEST['category_data'],$auth);
 			return array(CONTROLLER_STATUS_REDIRECT,$_REQUEST['dispatch']);
@@ -408,10 +408,10 @@ if ( !defined('AREA') ) { die('Access denied'); }
 			$disabled = db_get_row("SELECT * FROM ?:bb_bids WHERE product_id = ?i AND active = 0 AND user_id = ?i",$_REQUEST['product_id'],$auth['user_id']);
 			if($disabled){
 				db_query("UPDATE ?:bb_bids SET ?u WHERE product_id = ?i AND active = 0",$_REQUEST['product_id']);
-				fn_set_notification('N',fn_get_lang_var('qiwi_result_status_0'),fn_get_lang_var('updated_successful_msg'));
+				fn_set_notification('N',__('qiwi_result_status_0'),__('updated_successful_msg'));
 				fn_redirect('index.php?dispatch=billibuys.view');
 			}else{
-				fn_set_notification('E',fn_get_lang_var('error'),fn_get_lang_var('no_disabled_bids'));
+				fn_set_notification('E',__('error'),__('no_disabled_bids'));
 				fn_redirect('vendor.php?dispatch=update_bids&product_id='.$_REQUEST['product_id']);
 			}
 		}elseif($update_bid_selected == 'manual_update'){

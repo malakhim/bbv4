@@ -7,6 +7,10 @@
 
 
 if ( !defined('AREA') ) { die('Access denied'); }
+
+use Tygh\Session;
+use Tygh\Registry;
+
 /**
  * Find position of Nth occurrence of search string
  * @param string $search The search string
@@ -394,11 +398,11 @@ function fn_billibuys_order_placement_routines($order_id, $force_notification, $
 					$email_addr = $user['email'];
 					$view_mail = Registry::get('view_mail');
 					$product = db_get_row("SELECT product FROM ?:product_descriptions WHERE product_id = ?i AND lang_code = ?s",$request['product_id'],'EN');
-					$view_mail->assign('subject',fn_get_lang_var('zero_amount'));
+					$view_mail->assign('subject',__('zero_amount'));
 					$view_mail->assign('user',$user);
 					$view_mail->assign('product',$product);
 					$url = $_SERVER['HTTP_HOST'].fn_url('vendor.php?dispatch=products.update&product_id='.$product['product_id']);
-					$view_mail->assign('product_line',str_replace('[url]',$url,fn_get_lang_var('reenable_bids')));
+					$view_mail->assign('product_line',str_replace('[url]',$url,__('reenable_bids')));
 					fn_send_mail($email_addr,Registry::get('settings.Company.company_users_department'),'addons/billibuys/bid_subj.tpl','addons/billibuys/empty_quantity_body.tpl','', Registry::get('settings.Appearance.admin_default_language'));
 				}
 				// Let's allow more bids, so we'll comment this line out for now
@@ -506,7 +510,11 @@ function fn_get_bids($params){
 		$query .= ' ORDER BY ?p';
 	}
 
-	$limit = fn_paginate($_REQUEST['page'], $bids_count, Registry::get('settings.Appearance.products_per_page')); 
+	// CS-Cart v4 formatting changed, thus this line is unnecessary
+	// $limit = fn_paginate($_REQUEST['page'], $bids_count, Registry::get('settings.Appearance.products_per_page')); 
+	
+	$limit = db_paginate($_REQUEST['page'], Registry::get('settings.Appearance.products_per_page'), $bids_count); 
+
 
 	$query .= " $limit";
 
@@ -546,7 +554,7 @@ function fn_submit_bids($bb_data,$auth){
 		return false;
 	}else{
 		if(!isset($bb_data['product_ids'])){
-			fn_set_notification('E', fn_get_lang_var('error'), fn_get_lang_var('no_request_item_selected'));
+			fn_set_notification('E', __('error'), __('no_request_item_selected'));
 			return false;
 		}
 
@@ -579,37 +587,37 @@ function fn_submit_bids($bb_data,$auth){
 						$mp_plus_extra = $mp + MAX_PRICE_VARIATION*$mp;
 						if($request_item['allow_over_max_price'] && ($price > ($mp_plus_extra))){
 							// Check if bid price is over requested max by MAX_PRICE_VARIATION, indicated by "allow_over_max_price" flag
-							$error_msg = fn_get_lang_var('bid_is_over_request_max').$currency_symbol.fn_format_price($mp_plus_extra).'. '.fn_get_lang_var('your_bid_amount').$currency_symbol.fn_format_price($price).'.';
+							$error_msg = __('bid_is_over_request_max').$currency_symbol.fn_format_price($mp_plus_extra).'. '.__('your_bid_amount').$currency_symbol.fn_format_price($price).'.';
 						}elseif(!$request_item['allow_over_max_price'] && $price > $mp){
 							// Check bid price is under or equal to request max
-							$error_msg = fn_get_lang_var('bid_is_over_request_max').$currency_symbol.fn_format_price($mp).'. '.fn_get_lang_var('your_bid_amount').fn_format_price($mp);
+							$error_msg = __('bid_is_over_request_max').$currency_symbol.fn_format_price($mp).'. '.__('your_bid_amount').fn_format_price($mp);
 						}elseif(stripos($request_item['title'],$product_name) === FALSE && stripos($product_name, $request_item['title']) === FALSE){
 							// Throw name-not-matching error
-							$error_msg = fn_get_lang_var('bid_name_matching_error');
+							$error_msg = __('bid_name_matching_error');
 						}elseif($amount > $request_item['quantity']){
-							$error_msg = fn_get_lang_var('bid_quantity_more_than_requested');
+							$error_msg = __('bid_quantity_more_than_requested');
 						}
 					}else{
 						// Throw zero/negative price flag
-						$error_msg = fn_get_lang_var('qty_cannot_be_zero');
+						$error_msg = __('qty_cannot_be_zero');
 					}
 				}
 			}elseif(!intval($request_item['max_price'])){
 				// Do nothing (since users can choose to place a request without a max price)
 			}elseif($request_item['expiry_date'] <= microtime(true)){
-				$error_msg = fn_get_lang_var('auction_finished').'.';
+				$error_msg = __('auction_finished').'.';
 			}else{
 				// Throw non-numeric error
 				// TODO: This is caught by javascript atm, not PHP but needs to return a value in case an invalid bid is POSTed
-				$error_msg = fn_get_lang_var('error_occurred');
+				$error_msg = __('error_occurred');
 			}
 		}elseif($bb_data['products_data'][$pid]['price'] <= 0){
 			// TODO: This is caught by javascript atm, not PHP but needs to return a value in case an invalid bid is POSTed
-			$error_msg = fn_get_lang_var('bid_price_cannot_be_zero');
+			$error_msg = __('bid_price_cannot_be_zero');
 		}
 
 		if($error_msg != null && isset($error_msg)){
-			fn_set_notification('E', fn_get_lang_var('error'), $error_msg);
+			fn_set_notification('E', __('error'), $error_msg);
 			return false;
 		}
 
@@ -653,7 +661,7 @@ function fn_submit_bids($bb_data,$auth){
 		$user = db_get_row("SELECT ?:users.* FROM ?:users INNER JOIN ?:bb_requests ON ?:bb_requests.user_id = ?:users.user_id WHERE bb_request_id = ?i",$new_bid['request_id']);
 		$email_addr = $user['email'];
 		$view_mail = Registry::get('view_mail');
-		$view_mail->assign('subject',fn_get_lang_var('user_placed_bid'));
+		$view_mail->assign('subject',__('user_placed_bid'));
 		$view_mail->assign('user',$user);
 		$view_mail->assign('request_item',$request_item);
 		$view_mail->assign('bid',$new_bid);
@@ -895,7 +903,7 @@ function fn_get_requests($params = Array()){
 			}
 			$requests_count = db_get_field($query,$where);
 
-			$limit = fn_paginate($params['page'], $requests_count, Registry::get('settings.Appearance.products_per_page')); // FIXME: page
+			$limit = db_paginate($params['page'], Registry::get('settings.Appearance.products_per_page'), $requests_count); // FIXME: page
 
 			// For actual querying
 			$query = 'SELECT * 
@@ -1019,12 +1027,12 @@ function fn_bb_add_category($category_data,$auth){
 	}
 
 	if(strlen($_data['category_name']) > 50){
-		fn_set_notification('E',fn_get_lang_var('error'),fn_get_lang_var('bb_name_too_long'));
+		fn_set_notification('E',__('error'),__('bb_name_too_long'));
 		return false;
 	}
 
 	if(strlen($_data['category_description']) > 500){
-		fn_set_notification('E',fn_get_lang_var('error'),fn_get_lang_var('bb_description_too_long'));
+		fn_set_notification('E',__('error'),__('bb_description_too_long'));
 		return false;		
 	}
 
@@ -1107,10 +1115,10 @@ function fn_bb_delete_category($category_id){
 function fn_get_requests_sorting()
 {
 	$sorting = array(
-		'timestamp' => array('description' => fn_get_lang_var('date'), 'default_order' => 'desc'),
-		'title' => array('description' => fn_get_lang_var('name'), 'default_order' => 'asc'),
-		'max_price' => array('description' => fn_get_lang_var('max_price'), 'default_order' => 'asc'),
-		'popularity' => array('description' => fn_get_lang_var('popularity'), 'default_order' => 'desc')
+		'timestamp' => array('description' => __('date'), 'default_order' => 'desc'),
+		'title' => array('description' => __('name'), 'default_order' => 'asc'),
+		'max_price' => array('description' => __('max_price'), 'default_order' => 'asc'),
+		'popularity' => array('description' => __('popularity'), 'default_order' => 'desc')
 	);
 
 	/**
@@ -1129,10 +1137,10 @@ function fn_get_requests_sorting()
 
 function fn_get_offers_sorting(){
 	$sorting = array(
-		'timestamp' => array('description' => fn_get_lang_var('date'), 'default_order' => 'desc'),
-		'title' => array('description' => fn_get_lang_var('name'), 'default_order' => 'asc'),
-		'price' => array('description' => fn_get_lang_var('price'), 'default_order' => 'asc'),
-		// 'popularity' => array('description' => fn_get_lang_var('popularity'), 'default_order' => 'desc')
+		'timestamp' => array('description' => __('date'), 'default_order' => 'desc'),
+		'title' => array('description' => __('name'), 'default_order' => 'asc'),
+		'price' => array('description' => __('price'), 'default_order' => 'asc'),
+		// 'popularity' => array('description' => __('popularity'), 'default_order' => 'desc')
 	);
 
 	return $sorting;
@@ -1310,11 +1318,11 @@ function fn_set_rating($params){
 				db_query('INSERT INTO ?:bb_ratings ?e',$params);
 			}
 		}else{
-			$success = Array('success' => false,'message' => fn_get_lang_var('bb_error_invalid_input_params'));
+			$success = Array('success' => false,'message' => __('bb_error_invalid_input_params'));
 		}
 	}else{
 		// Return false and error message
-		$success = Array('success' => false, 'message' => fn_get_lang_var('bb_error_invalid_input_params'));
+		$success = Array('success' => false, 'message' => __('bb_error_invalid_input_params'));
 	}
 	return $success;
 }
@@ -1351,7 +1359,7 @@ function fn_update_bid($params){
 		$bid_id = $params['bid_id'];
 		$bid_user_id = db_get_field("SELECT user_id FROM ?:bb_bids WHERE bb_bid_id = ?i",$bid_id);
 		if($bid_user_id != $_SESSION['auth']['user_id']){
-			return array('success'=>false,'message'=>fn_get_lang_var('bb_error_invalid_input_params'));
+			return array('success'=>false,'message'=>__('bb_error_invalid_input_params'));
 		}
 		unset($params['bid_id']);
 		if(isset($params['price']) && is_string($params['price'])){
@@ -1360,18 +1368,18 @@ function fn_update_bid($params){
 				$price_setting = db_get_row("SELECT max_price,allow_over_max_price FROM ?:bb_request_item INNER JOIN ?:bb_requests ON ?:bb_requests.request_item_id = ?:bb_request_item.bb_request_item_id INNER JOIN ?:bb_bids ON ?:bb_bids.request_id = ?:bb_requests.bb_request_id WHERE bb_bid_id = ?i",$bid_id);
 				$max_price = $price_setting['allow_over_max_price'] ? $price_setting['max_price'] * (1 + MAX_PRICE_VARIATION) : $price_setting['max_price'];
 				if($params['price'] > $max_price){
-					return array('success'=>false,'message'=>fn_get_lang_var('bid_is_over_request_max').$max_price);
+					return array('success'=>false,'message'=>__('bid_is_over_request_max').$max_price);
 				}elseif($params['price'] == 0){
-					return array('success'=>false,'message'=>fn_get_lang_var('bid_price_cannot_be_zero'));
+					return array('success'=>false,'message'=>__('bid_price_cannot_be_zero'));
 				}
 			}else{
-				return array('success'=>false,'message'=>fn_get_lang_var('bb_error_validator_price_format'));
+				return array('success'=>false,'message'=>__('bb_error_validator_price_format'));
 			}
 		}
 		db_query("UPDATE ?:bb_bids SET ?u WHERE bb_bid_id = ?i",$params,$bid_id);
 		return array('success'=>true);
 	}else{
-		return array('success'=>false,'message'=>fn_get_lang_var('bb_error_invalid_input_params'));
+		return array('success'=>false,'message'=>__('bb_error_invalid_input_params'));
 	}
 }
 
